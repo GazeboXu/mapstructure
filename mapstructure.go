@@ -377,6 +377,13 @@ func (d *Decoder) decodeString(name string, data interface{}, val reflect.Value)
 				uints = dataVal.Interface().([]uint8)
 			}
 			val.SetString(string(uints))
+		case reflect.Interface:
+			// treat []interface{}{}as empty value
+			if dataVal.Len() == 0 {
+				val.SetString("")
+			} else {
+				converted = false
+			}
 		default:
 			converted = false
 		}
